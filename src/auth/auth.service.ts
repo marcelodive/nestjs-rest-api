@@ -12,10 +12,10 @@ export class AuthService {
 
     async signIn(
         email: string,
-        pass: string,
+        password: string,
       ): Promise<{ access_token: string }> {
         const user = await this.usersService.findByEmail(email);
-        const isAPasswordMatch = await bcrypt.compare(pass, user.password);
+        const isAPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isAPasswordMatch) {
           throw new UnauthorizedException();
         }

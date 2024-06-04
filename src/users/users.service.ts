@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CryptoService } from '../crypto/crypto.service';
+import { UserAlreadyExistsError } from '../common/custom-errors';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +15,12 @@ export class UsersService {
   ) {}
 
   async create({email, password}: CreateUserDto) {
-    return this.userRepository.create({
+    const existingUser = await this.userRepository.findOneBy({email});
+    if (existingUser) {
+      throw new UserAlreadyExistsError();
+    }
+
+    return this.userRepository.save({
       email,
       password: await this.cryptoService.hashPassword(password),
     })

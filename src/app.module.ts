@@ -14,8 +14,6 @@ import { CryptoService } from './crypto/crypto.service';
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      // inject: [ConfigService],
-      // useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: process.env.DB_HOST,
         port: +process.env.DB_PORT,
@@ -23,19 +21,15 @@ import { CryptoService } from './crypto/crypto.service';
         password: process.env.DB_PASS,
         database: process.env.DB_SCHEMA,
         autoLoadEntities: true,
-        synchronize: process.env.DB_SCHEMA === 'local',
-      // })
+        synchronize: process.env.APP_ENV === 'local',
     }),
     AuthModule,
     UsersModule,
     ExpensesModule,
     JwtModule.register({
-      // inject: [ConfigService],
-      // useFactory: (configService: ConfigService) => ({
         global: true,
         secret: process.env.JWT_SECRET,
         signOptions: { expiresIn: '1d' },
-      // })
     }),
   ],
   controllers: [AppController],
