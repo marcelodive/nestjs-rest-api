@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 // import { User } from './users/entities/user.entity';
 import { ExpensesModule } from './expenses/expenses.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CryptoService } from './crypto/crypto.service';
 
 @Module({
   imports: [
@@ -38,6 +39,6 @@ import { JwtModule } from '@nestjs/jwt';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CryptoService],
 })
 export class AppModule {}
