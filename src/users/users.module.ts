@@ -6,9 +6,7 @@ import { User } from './entities/user.entity';
 import { CryptoService } from '../crypto/crypto.service';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([User]),
-  ],
+  imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
   providers: [UsersService, CryptoService],
   exports: [UsersService],

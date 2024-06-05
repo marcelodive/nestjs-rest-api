@@ -14,8 +14,8 @@ export class UsersService {
     private readonly cryptoService: CryptoService,
   ) {}
 
-  async create({email, password}: CreateUserDto) {
-    const existingUser = await this.userRepository.findOneBy({email});
+  async create({ email, password }: CreateUserDto) {
+    const existingUser = await this.userRepository.findOneBy({ email });
     if (existingUser) {
       throw new UserAlreadyExistsError();
     }
@@ -23,11 +23,11 @@ export class UsersService {
     return this.userRepository.save({
       email,
       password: await this.cryptoService.hashPassword(password),
-    })
+    });
   }
 
   findByEmail(email: string): Promise<User> {
-    return this.userRepository.findOneBy({email});
+    return this.userRepository.findOneBy({ email });
   }
 
   // update(id: number, updateUserDto: UpdateUserDto) {
