@@ -20,7 +20,7 @@ import { ExpensesModule } from './expenses/expenses.module';
       password: process.env.DB_PASS,
       database: process.env.DB_SCHEMA,
       autoLoadEntities: true,
-      // synchronize: process.env.APP_ENV === 'local',
+      synchronize: process.env.APP_ENV === 'local',
     }),
     AuthModule,
     UsersModule,

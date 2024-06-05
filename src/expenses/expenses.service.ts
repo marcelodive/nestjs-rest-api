@@ -8,7 +8,7 @@ import { UsersService } from '../users/users.service';
 import {
   ExpenseDoesNotExistsError,
   UserDoesNotExistsError,
-} from 'src/common/custom-errors';
+} from '../common/custom-errors';
 
 @Injectable()
 export class ExpensesService {
