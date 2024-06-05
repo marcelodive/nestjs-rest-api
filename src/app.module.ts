@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { CryptoService } from './crypto/crypto.service';
 import { ExpensesModule } from './expenses/expenses.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ExpensesModule } from './expenses/expenses.module';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService, CryptoService],

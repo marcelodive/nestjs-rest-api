@@ -9,6 +9,7 @@ import {
   ExpenseDoesNotExistsError,
   UserDoesNotExistsError,
 } from '../common/custom-errors';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class ExpensesService {
@@ -16,6 +17,7 @@ export class ExpensesService {
     @InjectRepository(Expense)
     private readonly expenseRepository: Repository<Expense>,
     private readonly usersService: UsersService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async create(createExpenseDto: CreateExpenseDto): Promise<Expense> {
@@ -25,12 +27,20 @@ export class ExpensesService {
 
     if (!user) throw new UserDoesNotExistsError(createExpenseDto.userEmail);
 
-    return this.expenseRepository.save({
+    const expense = this.expenseRepository.save({
       description: createExpenseDto.description,
       price: createExpenseDto.price,
       dateOccurred: createExpenseDto.dateOccurred,
       user,
     });
+
+    await this.notificationsService.sendEmail(
+      user.email,
+      'Despesa cadastrada',
+      '',
+    );
+
+    return expense;
   }
 
   findAll(userEmail: string): Promise<Expense[]> {

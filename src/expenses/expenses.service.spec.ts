@@ -8,11 +8,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { User } from '../users/entities/user.entity';
 import { UserDoesNotExistsError } from '../common/custom-errors';
+import { NotificationsService } from '../notifications/notifications.service';
 
 describe('ExpensesService', () => {
   let expensesService: ExpensesService;
   let expenseRepository: Repository<Expense>;
   let usersService: UsersService;
+  let notificationsService: NotificationsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,6 +28,8 @@ describe('ExpensesService', () => {
       getRepositoryToken(Expense),
     );
     usersService = module.get<UsersService>(UsersService);
+    notificationsService =
+      module.get<NotificationsService>(NotificationsService);
   });
 
   it('should be defined', () => {
@@ -52,12 +56,16 @@ describe('ExpensesService', () => {
       const saveSpy = jest
         .spyOn(expenseRepository, 'save')
         .mockResolvedValue(createdExpense);
+      const emailSpy = jest
+        .spyOn(notificationsService, 'sendEmail')
+        .mockResolvedValue();
 
       expect(await expensesService.create(createExpenseDto)).toEqual(
         createdExpense,
       );
       expect(findOneBySpy).toHaveBeenCalled();
       expect(saveSpy).toHaveBeenCalled();
+      expect(emailSpy).toHaveBeenCalled();
     });
 
     it('should throw an UserDoesNotExistsError', async () => {
@@ -74,12 +82,16 @@ describe('ExpensesService', () => {
       const saveSpy = jest
         .spyOn(expenseRepository, 'save')
         .mockResolvedValue(null);
+      const emailSpy = jest
+        .spyOn(notificationsService, 'sendEmail')
+        .mockResolvedValue();
 
       await expect(expensesService.create(createExpenseDto)).rejects.toThrow(
         UserDoesNotExistsError,
       );
       expect(findOneBySpy).toHaveBeenCalled();
       expect(saveSpy).not.toHaveBeenCalled();
+      expect(emailSpy).not.toHaveBeenCalled();
     });
   });
 });
