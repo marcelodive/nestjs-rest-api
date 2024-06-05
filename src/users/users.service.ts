@@ -29,12 +29,4 @@ export class UsersService {
   findByEmail(email: string): Promise<User> {
     return this.userRepository.findOneBy({ email });
   }
-
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
 }

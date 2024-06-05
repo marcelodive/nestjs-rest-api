@@ -5,7 +5,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-// import { User } from './users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { CryptoService } from './crypto/crypto.service';
 import { ExpensesModule } from './expenses/expenses.module';
@@ -21,7 +20,7 @@ import { ExpensesModule } from './expenses/expenses.module';
       password: process.env.DB_PASS,
       database: process.env.DB_SCHEMA,
       autoLoadEntities: true,
-      synchronize: process.env.APP_ENV === 'local',
+      // synchronize: process.env.APP_ENV === 'local',
     }),
     AuthModule,
     UsersModule,
